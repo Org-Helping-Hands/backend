@@ -8,9 +8,7 @@ export const user_signin : RequestHandler = (req,res) => {
       .auth()
       .verifyIdToken(idToken)
       .then((decodedToken) => {
-        const uid = decodedToken.uid;
-        console.log(uid);
-        
+        const uid = decodedToken.uid;        
         res.status(200).end()
         // ...
       })
