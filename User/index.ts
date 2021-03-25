@@ -1,9 +1,6 @@
-const { Router } = require("express");
-var admin = require("../Firebase/index");
-var express = require("express");
-
-/** @type {Router} */
-var router = express.Router();
+import {Router} from 'express'
+import admin from "../Firebase";
+var router = Router();
 router.post("/signin", (req,res) => {
   // idToken comes from the client app
   let idToken = req.body.idToken;
