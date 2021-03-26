@@ -9,7 +9,6 @@ interface reqBody {
 
 export const user_signin: RequestHandler = (req, res) => {
   const body: reqBody = req.body;
-  console.log(body);
   let idToken = body.idToken;
   admin
     .auth()
@@ -17,12 +16,19 @@ export const user_signin: RequestHandler = (req, res) => {
     .then(async (decodedToken) => {
       const UserId = decodedToken.uid;
       let { name } = body;
-      User.create({
-        name,
-        phoneNumber: decodedToken.phone_number ?? "",
-        id: decodedToken.uid,
+      let user = await User.findOne({
+        where: {
+          id: UserId,
+        },
       });
-      Tokens.create({ token: idToken, UserId: UserId });
+      if (!user) {
+        User.create({
+          name,
+          phoneNumber: decodedToken.phone_number ?? "",
+          id: decodedToken.uid,
+        });
+      }
+      Tokens.create({ token: idToken, UserId });
       res.status(200).end();
     })
     .catch((error) => {});
