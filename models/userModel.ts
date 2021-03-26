@@ -8,38 +8,50 @@ interface UserAttributes {
   id: string;
 }
 class User extends Model<UserAttributes> {}
-User.init({
-  name: DataTypes.STRING,
-  phoneNumber: DataTypes.STRING,
-  id: {
-    type: DataTypes.STRING,
-    primaryKey: true,
+User.init(
+  {
+    name: DataTypes.STRING,
+    phoneNumber: DataTypes.STRING,
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+    },
   },
-},{
-  sequelize,
-  modelName: "User"
-});
+  {
+    sequelize,
+    modelName: "User",
+  }
+);
 
 interface TokenAttributes {
-  token : string;
-  UserId?:string;
+  no?: number;
+  token: string;
+  UserId?: string;
 }
 
 class Tokens extends Model<TokenAttributes> {}
 
-Tokens.init({
-token: {
-  type: DataTypes.STRING,
-  primaryKey: true
-},
-UserId: {
-  type: DataTypes.STRING
-}
-},{
-  modelName:"Token",
-  sequelize
-});
+Tokens.init(
+  {
+    no: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    token: {
+      type: DataTypes.STRING(900),
+      primaryKey: true,
+    },
+    UserId: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    modelName: "Token",
+    sequelize,
+  }
+);
 
-User.hasMany(Tokens)
+User.hasMany(Tokens);
 
-export { User,Tokens };
+export { User, Tokens };
