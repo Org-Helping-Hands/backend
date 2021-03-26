@@ -1,7 +1,8 @@
 import express from 'express'
-var app = express()
-import userRoutes from "./routes/userRoutes";
 import cors from "cors";
+import userRoutes from "./routes/userRoutes";
+
+var app = express()
 var bodyparser = require('body-parser')
 app.use(bodyparser.json())
 app.use(cors())
