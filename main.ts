@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import userRoutes from "./src/routes/userRoutes";
+import "./src/typeorm";
 
 var app = express();
 var bodyparser = require("body-parser");

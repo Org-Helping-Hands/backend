@@ -1,57 +1,40 @@
-import { Model, Optional } from "sequelize";
-import { DataTypes } from "sequelize";
-import { sequelize } from "../sequelize";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-interface UserAttributes {
-  name: string;
-  phoneNumber: string;
+@Entity()
+export class User extends BaseEntity {
+  @PrimaryColumn()
   id: string;
-}
-class User extends Model<UserAttributes> {}
-User.init(
-  {
-    name: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-    },
-  },
-  {
-    sequelize,
-    modelName: "User",
-  }
-);
 
-interface TokenAttributes {
-  no?: number;
+  @Column()
+  name: string;
+
+  @Column()
+  phoneNumber: string;
+
+  @OneToMany((type) => Token, (token) => token.user, { cascade: true })
+  tokens: Token[];
+}
+
+@Entity()
+export class Token extends BaseEntity {
+  @PrimaryColumn({ length: 900 })
   token: string;
-  UserId?: string;
+
+  @ManyToOne((type) => User, (user) => user.tokens)
+  user: User;
 }
 
-class Tokens extends Model<TokenAttributes> {}
-
-Tokens.init(
-  {
-    no: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    token: {
-      type: DataTypes.STRING(900),
-      primaryKey: true,
-    },
-    UserId: {
-      type: DataTypes.STRING,
-    },
-  },
-  {
-    modelName: "Token",
-    sequelize,
-  }
-);
-
-User.hasMany(Tokens);
-
-export { User, Tokens };
+/*
+create table test (
+  token varchar(200) primary key
+userId varchar(255),
+FOREIGN KEY (userId) REFERENCES user(id)); 
+*/
