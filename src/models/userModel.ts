@@ -31,10 +31,3 @@ export class Token extends BaseEntity {
   @ManyToOne((type) => User, (user) => user.tokens)
   user: User;
 }
-
-/*
-create table test (
-  token varchar(200) primary key
-userId varchar(255),
-FOREIGN KEY (userId) REFERENCES user(id)); 
-*/
