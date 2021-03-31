@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import admin from "../Firebase";
-import { User, Token } from "../models/userModel";
+import { Token } from "../models/tokenModel";
+import { User } from "../models/userModel";
 
 interface reqBody {
   name: string;
