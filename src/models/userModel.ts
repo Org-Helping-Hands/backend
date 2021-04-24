@@ -28,6 +28,6 @@ export class User extends BaseEntity {
   @Column()
   totalPostCompletedByOthers: number = 0;
 
-  @Column()
+  @Column({ default: "" })
   emailId: string;
 }

@@ -1,15 +1,16 @@
 import { RequestHandler } from "express";
 import admin from "../Firebase";
+import { IBody } from "../interfaces";
 import { Token } from "../models/tokenModel";
 import { User } from "../models/userModel";
 
-interface reqBody {
+interface userSignInReqBody {
   name: string;
   idToken: string;
 }
 
 export const user_signin: RequestHandler = (req, res) => {
-  const body: reqBody = req.body;
+  const body: userSignInReqBody = req.body;
   let idToken = body.idToken;
   admin
     .auth()
@@ -33,4 +34,10 @@ export const user_signin: RequestHandler = (req, res) => {
       }
     })
     .catch((error) => {});
+};
+
+export const user_get_data: RequestHandler = async (req, res) => {
+  const body = req.body as IBody;
+  let user = await User.findOne(body.userId);
+  res.send(user).end();
 };
