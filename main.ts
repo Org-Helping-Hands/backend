@@ -4,8 +4,7 @@ import userRoutes from "./src/routes/userRoutes";
 import "./src/typeorm";
 
 var app = express();
-var bodyparser = require("body-parser");
-app.use(bodyparser.json());
+app.use(express.json());
 app.use(cors());
 app.get("/", (_, res) => {
   res.send("<h4>Wrong</h4>");
