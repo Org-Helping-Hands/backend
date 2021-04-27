@@ -23,12 +23,14 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase-admin": "^9.4.2",
+    "multer": "^1.4.2",
     "mysql": "^2.14.1",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.31"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
+    "@types/multer": "^1.4.5",
     "@types/node": "^14.14.35",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",

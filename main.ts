@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import userRoutes from "./src/routes/userRoutes";
+import postRoutes from "./src/routes/postRoutes";
 import "./src/typeorm";
 
 var app = express();
@@ -11,6 +12,7 @@ app.get("/", (_, res) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/post", postRoutes);
 app.listen(process.env.PORT || 3001, () => {
   console.log("Server running");
 });

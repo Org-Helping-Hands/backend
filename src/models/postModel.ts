@@ -14,7 +14,9 @@ export class Post extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @OneToMany((type) => NeededItem, (neededItem) => neededItem.post)
+  @OneToMany((type) => NeededItem, (neededItem) => neededItem.post, {
+    cascade: true,
+  })
   neededItems: NeededItem[];
 
   @Column()
@@ -22,9 +24,6 @@ export class Post extends BaseEntity {
 
   @Column()
   longitude: string;
-
-  @Column()
-  imageFolderName: string;
 
   @Column()
   description: string;
