@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import userRoutes from "./src/routes/userRoutes";
-import postRoutes from "./src/routes/postRoutes";
-import "./src/typeorm";
+import userRoutes from "./routes/userRoutes";
+import postRoutes from "./routes/postRoutes";
+import "./typeorm";
 
 var app = express();
 app.use(express.json());
