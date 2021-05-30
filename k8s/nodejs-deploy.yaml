@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-deploy
+spec:
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      containers:
+      - name: nodejs
+        image: thisisommore/hh-nodejs:v0.0.1
+      
+        resources:
+          limits:
+            memory: "900M"
+            cpu: "500m"
+        env:
+          - name: PORT
+            value: "3000"
+        ports:
+        - containerPort: 3000
+      imagePullSecrets:
+         - name: regcred
