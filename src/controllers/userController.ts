@@ -3,6 +3,7 @@ import admin from "../Firebase";
 import { IBody } from "../interfaces";
 import { Token } from "../models/tokenModel";
 import { User } from "../models/userModel";
+import crypto from "crypto";
 
 interface userSignInReqBody {
   name: string;
@@ -26,8 +27,10 @@ export const user_signin: RequestHandler = (req, res) => {
         });
         let User_user = await User.findOne(user);
         user.tokens = User_user?.tokens ?? [];
-        user.tokens.push(Token.create({ token: idToken }));
+        let newToken = crypto.randomBytes(100).toString("hex");
+        user.tokens.push(Token.create({ token: newToken }));
         user.save();
+        res.send({ newToken });
         res.status(200).end();
       } catch (_) {
         res.status(500).send("Error occured");

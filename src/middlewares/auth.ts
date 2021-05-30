@@ -13,7 +13,7 @@ export const auth_token: RequestHandler = async (req, res, next) => {
     .where("user.id = :userId", { userId })
     .andWhere("token.token = :uToken", { uToken: token })
     .andWhere("user.phoneNumber = :uPhoneNumber", { uPhoneNumber: phoneNumber })
-    .getMany();
+    .getOne();
 
   if (user) {
     next();
