@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { IBody } from "../interfaces";
 import { NeededItem, Post } from "../models/postModel";
 import { User } from "../models/userModel";
+import turf from "@turf/turf";
 import fs from "fs";
 import path from "path";
 
@@ -13,6 +14,11 @@ interface IPostCreateReqBody extends IBody {
   longitude: string;
 
   description: string;
+}
+
+interface IPostFetchReqBody extends IBody {
+  latitude: string;
+  longitude: string;
 }
 
 export const post_create: RequestHandler = async (req, res) => {
@@ -58,4 +64,12 @@ export const post_create: RequestHandler = async (req, res) => {
     console.log(error);
     res.status(500).end();
   }
+};
+
+export const post_fetch: RequestHandler = async (req, res) => {
+  const body = req.body as IPostFetchReqBody;
+  let post = await Post.find({ relations: ["neededItems", "postedBy"] });
+  console.log(post);
+
+  res.send(post).status(200).end();
 };
