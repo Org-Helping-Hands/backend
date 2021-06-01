@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
 import { IBody } from "../interfaces";
-import { NeededItem, Post } from "../models/postModel";
+import { NeededItem, Post, TLatestOperation } from "../models/postModel";
 import { User } from "../models/userModel";
 import turf from "@turf/turf";
 import fs from "fs";
 import path from "path";
+import { getRepository } from "typeorm";
 
 interface IPostCreateReqBody extends IBody {
   neededItems: string;
@@ -19,6 +20,15 @@ interface IPostCreateReqBody extends IBody {
 interface IPostFetchReqBody extends IBody {
   latitude: string;
   longitude: string;
+}
+
+interface IPostUpdateStatusReqBody extends IBody {
+  postId: string;
+  latestOperation: TLatestOperation;
+}
+
+interface IPostFetchDetailsReqBody extends IBody {
+  postId: string;
 }
 
 export const post_create: RequestHandler = async (req, res) => {
@@ -67,9 +77,34 @@ export const post_create: RequestHandler = async (req, res) => {
 };
 
 export const post_fetch: RequestHandler = async (req, res) => {
-  const body = req.body as IPostFetchReqBody;
-  let post = await Post.find({ relations: ["neededItems", "postedBy"] });
-  console.log(post);
+  let post = await getRepository(Post)
+    .createQueryBuilder("post")
+    .select("post.id")
+    .leftJoin("post.postedBy", "user")
+    .addSelect("user.name")
+    .getMany();
 
   res.send(post).status(200).end();
+};
+
+export const post_fetch_details: RequestHandler = async (req, res) => {
+  const body = req.body as IPostFetchDetailsReqBody;
+  let post = await Post.findOne(body.postId, { relations: ["needItems"] });
+  if (post) {
+    res.send(post).status(200).end();
+  } else {
+    return res.status(400).send("Post not found").end();
+  }
+};
+
+export const post_update_status: RequestHandler = async (req, res) => {
+  const body = req.body as IPostUpdateStatusReqBody;
+  const { postId, latestOperation } = body;
+
+  let user = await User.findOne(body.userId);
+  Post.updatePost(postId, { latestOperation, operationPerformedBy: user })
+    .then((success) => res.status(200).end())
+    .catch((e: Error) => {
+      res.status(400).send(e.message).end();
+    });
 };
