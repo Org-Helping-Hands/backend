@@ -20,6 +20,12 @@ spec:
             memory: "900M"
             cpu: "500m"
         env:
+          - name: MYSQL_HOST
+            value: mysql-service
+          - name: MYSQL_USER
+            value: Om
+          - name: MYSQL_PASSWORD
+            value: "0000"
           - name: PORT
             value: "3000"
         ports:

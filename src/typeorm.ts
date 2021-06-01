@@ -1,11 +1,12 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
+
 createConnection({
   type: "mysql",
-  host: "mysql-service",
-  port: 3306,
-  username: "Om",
-  password: "0000",
+  host: process.env.MYSQL_HOST,
+  port: parseInt(process.env.MYSQL_ACCESS_PORT as string),
+  username: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
   database: "helpinghands",
   synchronize: true,
   logging: false,
