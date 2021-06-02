@@ -12,23 +12,23 @@ spec:
         app: nodejs
     spec:
       containers:
-      - name: nodejs
-        image: thisisommore/hh-nodejs:v0.0.1
-      
-        resources:
-          limits:
-            memory: "900M"
-            cpu: "500m"
-        env:
-          - name: MYSQL_HOST
-            value: mysql-service
-          - name: MYSQL_USER
-            value: Om
-          - name: MYSQL_PASSWORD
-            value: "0000"
-          - name: PORT
-            value: "3000"
-        ports:
-        - containerPort: 3000
+        - name: nodejs
+          image: thisisommore/hh-nodejs:v0.0.1
+
+          resources:
+            limits:
+              memory: "900M"
+              cpu: "1000m"
+          env:
+            - name: MYSQL_HOST
+              value: mysql-service
+            - name: MYSQL_USER
+              value: Om
+            - name: MYSQL_PASSWORD
+              value: "0000"
+            - name: PORT
+              value: "3000"
+          ports:
+            - containerPort: 3000
       imagePullSecrets:
-         - name: regcred
+        - name: regcred
