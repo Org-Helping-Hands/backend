@@ -7,6 +7,5 @@ spec:
   selector:
     app: nodejs
   ports:
-  - name: nodejs-service
-    port: 300
-    targetPort: 3000
+    - name: nodejs-service
+      port: 3000
