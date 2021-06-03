@@ -13,6 +13,7 @@ app.get("/", (_, res) => {
 
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
-app.listen(process.env.PORT || 3001, () => {
-  console.log("Server running");
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
