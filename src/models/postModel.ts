@@ -33,7 +33,7 @@ export class Post extends BaseEntity {
   @Column({ default: "Idle" })
   latestOperation: TLatestOperation;
 
-  @OneToOne((type) => User)
+  @ManyToOne((type) => User)
   @JoinColumn()
   operationPerformedBy: User;
 
