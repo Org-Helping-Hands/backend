@@ -12,21 +12,28 @@ spec:
         app: mysql
     spec:
       containers:
-      - name: mysql
-        image: mysql:5.7
-        resources:
-          limits:
-            memory: "900M"
-            cpu: "500m"
-        ports:
-        - containerPort: 3306
-          name: mysql
-        env:
-          - name: MYSQL_USER
-            value: Om
-          - name: MYSQL_PASSWORD
-            value: "0000"
-          - name: MYSQL_ROOT_PASSWORD
-            value: "100"
-          - name: MYSQL_DATABASE
-            value: helpinghands
+        - name: mysql
+          image: mysql:5.7
+          resources:
+            limits:
+              memory: "900M"
+              cpu: "500m"
+          ports:
+            - containerPort: 3306
+              name: mysql
+          env:
+            - name: MYSQL_USER
+              value: Om
+            - name: MYSQL_PASSWORD
+              value: "0000"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "100"
+            - name: MYSQL_DATABASE
+              value: helpinghands
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
