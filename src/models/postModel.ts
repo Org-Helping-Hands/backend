@@ -30,8 +30,8 @@ export class Post extends BaseEntity {
   @Column()
   description: string;
 
-  @Column()
-  latestOperation: TLatestOperation = "Idle";
+  @Column({ default: "Idle" })
+  latestOperation: TLatestOperation;
 
   @OneToOne((type) => User)
   @JoinColumn()
