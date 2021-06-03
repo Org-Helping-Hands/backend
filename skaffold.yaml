@@ -3,13 +3,25 @@ kind: Config
 metadata:
   name: backend
 
-build:
-  artifacts:
-    - image: thisisommore/hh-nodejs
-      sync:
-        manual:
-          - src: "src/**/*.ts"
-            dest: .
+profiles:
+  - name: local
+    activation:
+      - command: dev
+    build:
+      artifacts:
+        - image: thisisommore/hh-nodejs
+          sync:
+            manual:
+              - src: "src/**/*.ts"
+                dest: .
+
+  - name: prod
+    activation:
+      - command: run
+    build:
+      artifacts:
+        - image: thisisommore/hh-nodejs
+
 deploy:
   kubectl:
     manifests:
