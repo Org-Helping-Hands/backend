@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -33,6 +34,7 @@ export class Post extends BaseEntity {
   latestOperation: TLatestOperation = "Idle";
 
   @OneToOne((type) => User)
+  @JoinColumn()
   operationPerformedBy: User;
 
   @ManyToOne((type) => User, (user) => user.posts)
