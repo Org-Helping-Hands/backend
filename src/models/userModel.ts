@@ -20,7 +20,7 @@ export class User extends BaseEntity {
   posts: Post[];
 
   @Column()
-  currentPostHelpingId: string;
+  currentPostHelpingId: string = "";
 
   @Column()
   totalHelps: number = 0;
