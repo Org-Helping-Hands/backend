@@ -10,14 +10,3 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/home/wltd/k8s-volumes/mysql"
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pv-claim
-spec:
-  resources:
-    requests:
-      storage: 5Gi
-  accessModes:
-    - ReadWriteOnce
