@@ -34,4 +34,5 @@ profiles:
 deploy:
   kubectl:
     manifests:
-      - k8s/*
+      - k8s/*deploy*
+      - k8s/*service*
