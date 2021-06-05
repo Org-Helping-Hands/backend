@@ -31,6 +31,10 @@ interface IPostFetchDetailsReqBody extends IBody {
   postId: string;
 }
 
+interface IPostFetchImages extends IBody {
+  postId: string;
+}
+
 export const post_create: RequestHandler = async (req, res) => {
   const body = req.body as IPostCreateReqBody;
   let post = new Post();
@@ -54,15 +58,16 @@ export const post_create: RequestHandler = async (req, res) => {
   post.postedBy = user;
   try {
     let { id } = await post.save();
+
     if (files.length) {
-      let basePath = "C:/Users/ommor/Documents/GitHub/backend/public";
+      let basePath = "~/public";
       let _path = path.join(
         process.env.PUBLIC_PATH || basePath,
-        "/posts",
+        "posts",
         id.toString()
       );
       if (!fs.existsSync(_path)) {
-        fs.mkdirSync(path.join(_path), { recursive: true });
+        fs.mkdirSync(_path, { recursive: true });
       }
 
       files.forEach(({ originalname, buffer }) => {
@@ -80,6 +85,9 @@ export const post_fetch: RequestHandler = async (req, res) => {
   let post = await getRepository(Post)
     .createQueryBuilder("post")
     .select("post.id")
+    .addSelect("post.latitude")
+    .addSelect("post.longitude")
+    .leftJoinAndSelect("post.neededItems", "neededItems")
     .leftJoin("post.postedBy", "user")
     .addSelect("user.name")
     .getMany();
@@ -89,7 +97,7 @@ export const post_fetch: RequestHandler = async (req, res) => {
 
 export const post_fetch_details: RequestHandler = async (req, res) => {
   const body = req.body as IPostFetchDetailsReqBody;
-  let post = await Post.findOne(body.postId, { relations: ["needItems"] });
+  let post = await Post.findOne(body.postId, { relations: ["neededItems"] });
   if (post) {
     res.send(post).status(200).end();
   } else {
@@ -107,4 +115,26 @@ export const post_update_status: RequestHandler = async (req, res) => {
     .catch((e: Error) => {
       res.status(400).send(e.message).end();
     });
+};
+
+export const post_fetch_images: RequestHandler = async (req, res) => {
+  const body = req.body as IPostFetchImages;
+  let basePath = "~/public";
+  let _path = path.join(
+    process.env.PUBLIC_PATH || basePath,
+    "posts",
+    body.postId
+  );
+  if (fs.existsSync(_path)) {
+    let imagesFileName = fs.readdirSync(_path);
+
+    let images: Buffer[] = [];
+    imagesFileName.forEach((image) => {
+      let imagePath = path.join(_path, image);
+      images.push(fs.readFileSync(imagePath));
+    });
+    res.send(images);
+  } else {
+    res.status(404).send("Images not found");
+  }
 };
