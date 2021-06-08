@@ -8,7 +8,9 @@ interface userSignInReqBody {
   name: string;
   idToken: string;
 }
-
+interface updateUserEmailReqBody extends IBody {
+  emailId:string;
+}
 export const user_signin: RequestHandler = (req, res) => {
   const body: userSignInReqBody = req.body;
   let idToken = body.idToken;
@@ -40,4 +42,20 @@ export const user_get_data: RequestHandler = async (req, res) => {
   const body = req.body as IBody;
   let user = await User.findOne(body.userId);
   res.send(user).end();
+};
+
+export const user_update_email: RequestHandler = async (req, res) => {
+  const body = req.body as updateUserEmailReqBody;
+  let user = await User.findOne(body.userId);
+  if( !user){  
+    res.status(500).end();
+   }
+ else{
+  let updatedUser = await User.create({
+ ...user,emailId:body.emailId
+ });
+  updatedUser.save();
+ res.status(200).end(); 
+ }
+  
 };
