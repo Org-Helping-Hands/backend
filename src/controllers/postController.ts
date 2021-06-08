@@ -97,7 +97,10 @@ export const post_fetch: RequestHandler = async (req, res) => {
 
 export const post_fetch_details: RequestHandler = async (req, res) => {
   const body = req.body as IPostFetchDetailsReqBody;
-  let post = await Post.findOne(body.postId, { relations: ["neededItems"] });
+  let post = await Post.findOne(body.postId, {
+    relations: ["neededItems", "postedBy"],
+  });
+
   if (post) {
     res.send(post).status(200).end();
   } else {
@@ -128,12 +131,15 @@ export const post_fetch_images: RequestHandler = async (req, res) => {
   if (fs.existsSync(_path)) {
     let imagesFileName = fs.readdirSync(_path);
 
-    let images: Buffer[] = [];
+    let images: String[] = [];
     imagesFileName.forEach((image) => {
       let imagePath = path.join(_path, image);
-      images.push(fs.readFileSync(imagePath));
+      let imageBuffer = fs.readFileSync(imagePath);
+      // TODO: Check image size
+      // TODO: Send image file type
+      images.push(imageBuffer.toString("base64"));
     });
-    res.send(images);
+    res.send(images).status(200).end();
   } else {
     res.status(404).send("Images not found");
   }
