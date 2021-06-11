@@ -33,4 +33,17 @@ export class User extends BaseEntity {
 
   @Column({ default: "" })
   emailId: string;
+
+  @Column({ nullable: true })
+  updateEmailOtp: number;
+
+  @Column({ nullable: true })
+  emailToUpdate: string;
+
+  createOtp() {
+    var val = Math.floor(1000 + Math.random() * 9000);
+    this.updateEmailOtp = val;
+    this.save();
+    return val;
+  }
 }
