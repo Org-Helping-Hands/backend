@@ -7,3 +7,4 @@ export interface IBody {
 export interface IHeader extends IncomingHttpHeaders {
   token: string;
 }
+
