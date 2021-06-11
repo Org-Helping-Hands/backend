@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon main.ts",
+    "start": "nodemon src/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,12 +19,13 @@
   },
   "homepage": "https://github.com/Org-Helping-Hands/backend#readme",
   "dependencies": {
+    "@turf/turf": "^6.3.0",
     "@types/cors": "^2.8.10",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase-admin": "^9.4.2",
     "multer": "^1.4.2",
-    "mysql": "^2.14.1",
+    "mysql2": "^2.2.5",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.31"
   },

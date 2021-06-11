@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -9,6 +10,7 @@ import {
 } from "typeorm";
 import { User } from "./userModel";
 
+export type TLatestOperation = "Completed" | "Started" | "Idle";
 @Entity()
 export class Post extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
@@ -28,14 +30,21 @@ export class Post extends BaseEntity {
   @Column()
   description: string;
 
-  @Column()
-  latestOperation: "Completed" | "Started" | "Idle" = "Idle";
+  @Column({ default: "Idle" })
+  latestOperation: TLatestOperation;
 
-  @OneToOne((type) => User)
+  @ManyToOne((type) => User)
+  @JoinColumn()
   operationPerformedBy: User;
 
   @ManyToOne((type) => User, (user) => user.posts)
   postedBy: User;
+
+  static async updatePost(id: string, keyValue: Partial<Post>) {
+    let post = await Post.findOne(id);
+    if (post) return Post.create({ ...post, ...keyValue }).save();
+    else throw Error("Post not found");
+  }
 }
 
 @Entity()

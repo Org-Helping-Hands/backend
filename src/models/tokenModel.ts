@@ -3,7 +3,7 @@ import { User } from "./userModel";
 
 @Entity()
 export class Token extends BaseEntity {
-  @PrimaryColumn({ length: 893 })
+  @PrimaryColumn({ length: 200 })
   token: string;
 
   @ManyToOne((type) => User, (user) => user.tokens)

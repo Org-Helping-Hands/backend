@@ -1,0 +1,38 @@
+apiVersion: skaffold/v2beta16
+kind: Config
+metadata:
+  name: backend
+
+profiles:
+  - name: local
+    deploy:
+      kubeContext: minikube
+    activation:
+      - command: dev
+    portForward:
+      - resourceType: service
+        resourceName: nodejs-service
+        port: 3000
+        localPort: 3000
+    build:
+      artifacts:
+        - image: thisisommore/hh-nodejs
+          sync:
+            manual:
+              - src: "src/**/*.ts"
+                dest: .
+
+  - name: prod
+    deploy:
+      kubeContext: cloud_okteto_com
+    activation:
+      - command: run
+    build:
+      artifacts:
+        - image: thisisommore/hh-nodejs
+
+deploy:
+  kubectl:
+    manifests:
+      - k8s/*deploy*
+      - k8s/*service*

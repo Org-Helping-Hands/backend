@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-deploy
+spec:
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      containers:
+        - name: nodejs
+          image: thisisommore/hh-nodejs
+
+          resources:
+            limits:
+              memory: "900M"
+              cpu: "1000m"
+          env:
+            - name: MYSQL_HOST
+              value: mysql-service
+            - name: MYSQL_USER
+              value: Om
+            - name: MYSQL_PASSWORD
+              value: "0000"
+            - name: PORT
+              value: "3000"
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: regcred

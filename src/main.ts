@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import userRoutes from "./src/routes/userRoutes";
-import postRoutes from "./src/routes/postRoutes";
-import "./src/typeorm";
+import userRoutes from "./routes/userRoutes";
+import postRoutes from "./routes/postRoutes";
+import "./typeorm";
 
 var app = express();
 app.use(express.json());
@@ -13,6 +13,7 @@ app.get("/", (_, res) => {
 
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
-app.listen(process.env.PORT || 3001, () => {
-  console.log("Server running");
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
