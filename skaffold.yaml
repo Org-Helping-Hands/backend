@@ -28,6 +28,8 @@ profiles:
     activation:
       - command: run
     build:
+      local:
+        push: true
       artifacts:
         - image: thisisommore/hh-nodejs
 
