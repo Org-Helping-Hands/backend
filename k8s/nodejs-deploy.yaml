@@ -28,6 +28,16 @@ spec:
               value: "0000"
             - name: PORT
               value: "3000"
+            - name: EMAILID
+              valueFrom:
+                secretKeyRef:
+                  key: email
+                  name: email-pass
+            - name: EMAILPASS
+              valueFrom:
+                secretKeyRef:
+                  key: pass
+                  name: email-pass
           ports:
             - containerPort: 3000
       imagePullSecrets:
