@@ -20,6 +20,7 @@ interface IPostCreateReqBody extends IBody {
 interface IPostFetchReqBody extends IBody {
   latitude: string;
   longitude: string;
+  needItems: string[];
 }
 
 interface IPostUpdateStatusReqBody extends IBody {
@@ -82,6 +83,7 @@ export const post_create: RequestHandler = async (req, res) => {
 };
 
 export const post_fetch: RequestHandler = async (req, res) => {
+  const body = req.body as IPostFetchReqBody;
   let post = await getRepository(Post)
     .createQueryBuilder("post")
     .select("post.id")
@@ -112,9 +114,27 @@ export const post_update_status: RequestHandler = async (req, res) => {
   const body = req.body as IPostUpdateStatusReqBody;
   const { postId, latestOperation } = body;
 
-  let user = await User.findOne(body.userId);
+  let user = await User.findOne(body.userId, {
+    relations: ["currentHelpingPost"],
+  });
   Post.updatePost(postId, { latestOperation, operationPerformedBy: user })
-    .then((success) => res.status(200).end())
+    .then(async (post) => {
+      if (user) {
+        if (latestOperation == "Started") {
+          User.create({
+            ...user,
+            currentHelpingPost: post,
+          }).save();
+        } else {
+          User.create({
+            ...user,
+            currentHelpingPost: null,
+          }).save();
+        }
+      }
+
+      res.status(200).end();
+    })
     .catch((e: Error) => {
       res.status(400).send(e.message).end();
     });

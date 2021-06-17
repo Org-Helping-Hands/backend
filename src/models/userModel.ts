@@ -1,4 +1,12 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from "typeorm";
 import { Post } from "./postModel";
 import { Token } from "./tokenModel";
 
@@ -19,17 +27,18 @@ export class User extends BaseEntity {
   @OneToMany((type) => Post, (post) => post.postedBy)
   posts: Post[];
 
-  @Column()
-  currentPostHelpingId: string = "";
+  @OneToOne((type) => Post)
+  @JoinColumn()
+  currentHelpingPost: Post | null;
 
-  @Column()
-  totalHelps: number = 0;
+  @Column({ default: 0 })
+  totalHelps: number;
 
-  @Column()
-  totalPosts: number = 0;
+  @Column({ default: 0 })
+  totalPosts: number;
 
-  @Column()
-  totalPostCompletedByOthers: number = 0;
+  @Column({ default: 0 })
+  totalPostCompletedByOthers: number;
 
   @Column({ default: "" })
   emailId: string;

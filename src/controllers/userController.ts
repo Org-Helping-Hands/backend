@@ -45,7 +45,9 @@ export const user_signin: RequestHandler = (req, res) => {
 export const user_get_data: RequestHandler = async (req, res) => {
   const body = req.body as IBody;
 
-  let user = await User.findOne(body.userId);
+  let user = await User.findOne(body.userId, {
+    relations: ["currentHelpingPost"],
+  });
   res.send(user).end();
 };
 

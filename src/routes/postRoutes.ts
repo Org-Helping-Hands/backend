@@ -12,7 +12,7 @@ import multer from "multer";
 const upload = multer();
 var router = Router();
 router.post("/create", upload.array("images"), auth_token, post_create);
-router.post("/fetch", auth_token, post_fetch);
+router.post("/fetch", post_fetch);
 router.post("/update-status", auth_token, post_update_status);
 router.post("/fetch-details", auth_token, post_fetch_details);
 router.post("/fetch-images", auth_token, post_fetch_images);
