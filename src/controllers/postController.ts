@@ -92,6 +92,7 @@ export const post_fetch: RequestHandler = async (req, res) => {
     .leftJoinAndSelect("post.neededItems", "neededItems")
     .leftJoin("post.postedBy", "user")
     .addSelect("user.name")
+    .where("post.latestOperation = :status", { status: "Idle" })
     .getMany();
 
   res.send(post).status(200).end();
