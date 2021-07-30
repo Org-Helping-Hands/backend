@@ -31,7 +31,7 @@ spec:
             - name: MAILJET_USER
               valueFrom:
                 secretKeyRef:
-                  key: name
+                  key: user
                   name: mailjet-auth
             - name: MAILJET_PASSWORD
               valueFrom:
