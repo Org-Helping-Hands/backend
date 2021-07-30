@@ -17,7 +17,7 @@ spec:
 
           resources:
             limits:
-              memory: "900M"
+              memory: "1000M"
               cpu: "1000m"
           env:
             - name: MYSQL_HOST
