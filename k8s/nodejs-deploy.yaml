@@ -28,16 +28,16 @@ spec:
               value: "0000"
             - name: PORT
               value: "3000"
-            - name: EMAILID
+            - name: MAILJET_USER
               valueFrom:
                 secretKeyRef:
-                  key: email
-                  name: email-pass
-            - name: EMAILPASS
+                  key: name
+                  name: mailjet-auth
+            - name: MAILJET_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: pass
-                  name: email-pass
+                  name: mailjet-auth
           ports:
             - containerPort: 3000
       imagePullSecrets:
