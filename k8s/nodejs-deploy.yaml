@@ -38,7 +38,16 @@ spec:
                 secretKeyRef:
                   key: pass
                   name: mailjet-auth
+            - name: FIREBASE_CONFIG_PATH
+              value: /hh-nodejs/firebase/helping-hands-f0a98-firebase-adminsdk-ia6nq-df53617bfe.json
+          volumeMounts:
+            - mountPath: /hh-nodejs/firebase
+              name: firebase-config
           ports:
             - containerPort: 3000
+      volumes:
+        - name: firebase-config
+          secret:
+            secretName: firebase-config
       imagePullSecrets:
         - name: regcred

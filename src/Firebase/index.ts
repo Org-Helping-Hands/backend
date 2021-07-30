@@ -1,9 +1,11 @@
-import admin from "firebase-admin"
+import admin from "firebase-admin";
 
-var serviceAccount = require("./helping-hands-f0a98-firebase-adminsdk-ia6nq-df53617bfe.json");
+if (process.env.FIREBASE_CONFIG_PATH) {
+  var serviceAccount = require(process.env.FIREBASE_CONFIG_PATH);
+} else new Error("Config path undefined");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
 });
 
 export default admin;
