@@ -5,6 +5,7 @@ import { Token } from "../models/tokenModel";
 import { User } from "../models/userModel";
 import crypto from "crypto";
 import { sendMail } from "../common/mail";
+import { getRepository } from "typeorm";
 
 interface userSignInReqBody {
   name: string;
@@ -45,9 +46,18 @@ export const user_signin: RequestHandler = (req, res) => {
 export const user_get_data: RequestHandler = async (req, res) => {
   const body = req.body as IBody;
 
-  let user = await User.findOne(body.userId, {
-    relations: ["currentHelpingPost"],
-  });
+  // let user = await User.findOne(body.userId, {
+  //   relations: ["currentHelpingPost"],
+  // });
+  let user = await getRepository(User)
+    .createQueryBuilder("user")
+    .where("user.id = :userId", { userId: body.userId })
+    .leftJoinAndSelect("user.currentHelpingPost", "currentHelpingPost")
+    .leftJoinAndSelect(
+      "currentHelpingPost.postedBy",
+      "currentHelpingPostPostedBy"
+    )
+    .getOne();
   res.send(user).end();
 };
 
